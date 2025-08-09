@@ -1,0 +1,89 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* 全屏高 */
+}
+
+.content {
+  flex: 1 1 auto; /* 占满剩余空间 */
+  overflow-y: auto; /* 超出滚动 */
+  padding: 20px; /* 内边距 */
+}
+
+.page-header {
+  flex: 0 0 auto; /* 固定高度 */
+  font-size: 30px;
+  color: #333;
+  padding: 20px;
+}
+
+.button-style {
+  background-color: #E8ECEF;
+  width: 100px;
+  height: 90px;
+  font-size: 50px;
+  color: #31577E;
+  border-radius: 20%;
+}
+
+.card-style {
+  width: 480px;
+  height: 150px;
+  margin: 0 auto;
+  /* position: absolute;
+  bottom: 65%;
+  left: 50%;
+  transform: translateX(-50%); */
+  word-break: break-all;
+}
+
+.ant-carousel .slick-arrow {
+  color: #31577E;
+  font-size: 24px;
+  opacity: 1;
+}
+
+.row-style {
+  height: 460px;
+  width: 480px;
+  background-color: transparent;
+}
+
+.button-top-grid {
+  display: grid;
+  width: 400px;
+  grid-template-columns: repeat(4, 1fr); /* 一行3列 */
+  column-gap: 15px;
+  justify-content: center;
+  padding: 5px;
+}
+
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 一行3列 */
+  row-gap: 20px;
+  column-gap: 10px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.button-left-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr); /* 一行1列 */
+  row-gap: 20px;
+  justify-content: center;
+  padding: 15px;
+}
+
+#keys {
+  /* position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  grid-template-columns: repeat(6, 70px);
+  row-gap: 20px;
+  column-gap: 10px;
+  justify-content: center; */
+  padding: 20px;
+}
