@@ -1,6 +1,7 @@
 // src/views/Home.tsx (确保此文件存在并包含以下内容)
 import '../mystyles/homestyle.css'
-import React from 'react'
+import React, { useState } from 'react'
+import { evaluate } from 'mathjs'
 import { Button, Card, Carousel, Row, Col } from 'antd'
 
 const Home: React.FC = () => {
@@ -26,51 +27,127 @@ const Home: React.FC = () => {
 
   const str = '\u3000' // 字[全角空格]字
 
-  const onClick = (value: string): void => {
-    // TODO: 实现按钮点击逻辑
-    console.log('Button clicked:', value)
+  const [exprArr, setExprArr] = useState<string[]>([])
+  const [showExpressions, setShowExpressions] = useState<string[]>([])
+  const [tempArr, setTempArr] = useState<string[]>([])
+  const [result, setResult] = useState<string>('')
+  const EPSILON = 1e-12 // 误差阈值
+
+  const onClick = (num: string): void => {
+    setTempArr([]) // 清空临时数组
+    setResult('') // 清空结果
+    if (num === 'e' && exprArr[exprArr.length - 1] === 'log') {
+      setShowExpressions((prev) => [...prev, num])
+      return // 避免连续输入 'log' 后跟 'e'
+    }
+    setExprArr((prev) => [...prev, num])
+    if (num === 'pi') {
+      setShowExpressions((prev) => [...prev, 'π'])
+    } else if (num === 'sqrt') {
+      setShowExpressions((prev) => [...prev, '√'])
+    } else if (num === '^2') {
+      setShowExpressions((prev) => [...prev, '²'])
+    } else if (num === '^(-1)') {
+      setShowExpressions((prev) => [...prev, '⁻¹'])
+    } else if (num === '*0.01') {
+      setShowExpressions((prev) => [...prev, '%'])
+    } else if (num === '*') {
+      setShowExpressions((prev) => [...prev, '×'])
+    } else if (num === '/') {
+      setShowExpressions((prev) => [...prev, '÷'])
+    } else if (num === 'log10') {
+      setShowExpressions((prev) => [...prev, 'lg'])
+    } else if (num === 'log') {
+      setShowExpressions((prev) => [...prev, 'ln'])
+    } else if (num === 'atan') {
+      setShowExpressions((prev) => [...prev, 'tan⁻¹'])
+    } else {
+      setShowExpressions((prev) => [...prev, num])
+    }
+    console.log(showExpressions)
   }
 
   const onClick_ac = (): void => {
     // TODO: 实现清空逻辑
-    console.log('Clear clicked')
+    setShowExpressions([])
+    setExprArr([])
+    setTempArr([])
+    setResult('')
   }
 
   const onClick_de = (): void => {
     // TODO: 实现删除逻辑
-    console.log('Delete clicked')
+    if (
+      exprArr[exprArr.length - 1] === 'log' &&
+      showExpressions[showExpressions.length - 1] === 'e'
+    ) {
+      setShowExpressions((prev) => prev.slice(0, -1))
+      return // 避免连续输入 'log' 后跟 'e'
+    }
+    setExprArr((prev) => prev.slice(0, -1))
+    setShowExpressions((prev) => prev.slice(0, -1))
   }
 
-  const evaluating = (): void => {
+  const sanitizeResult = (value: number): number => {
+    const intPart = Math.round(value)
+    const decimalPart = Math.abs(value - intPart)
+    if (decimalPart < EPSILON) {
+      return intPart // 小数部分接近0，返回整数部分
+    }
+    return value // 否则返回原值
+  }
+
+  const evaluating = (): number => {
     // TODO: 实现计算逻辑
-    console.log('Evaluate clicked')
+    setTempArr([...showExpressions])
+    try {
+      const rawResult = evaluate(exprArr.join(''))
+      const numresult = sanitizeResult(rawResult)
+      console.log(numresult)
+      setExprArr([])
+      setShowExpressions([])
+      setResult(numresult.toString())
+      return numresult
+    } catch {
+      setExprArr([])
+      setShowExpressions([])
+      setResult('你认真的吗？')
+      return NaN
+    }
   }
 
   return (
     <div className="page">
       <div className="page-header">
-        标准计算器
+        <div style={{ height: '20px' }} />
         <Card hoverable variant="borderless" className="card-style">
-          文字
+          {showExpressions.join('')}
+          {result}
         </Card>
       </div>
       <div className="content">
-        <Carousel arrows infinite={false} style={{ width: '500px', height: '130px' }}>
+        <Carousel
+          arrows
+          dots={false}
+          // dotPosition="left"
+          infinite={false}
+          style={{ width: '500px', height: '130px' }}
+        >
           <div>
             {str}
             <Card hoverable variant="borderless" style={contentStyle}>
               <div className="button-top-grid">
-                <Button className="button-style" type="primary" onClick={() => onClick('AC')}>
-                  sin
+                <Button className="button-style" type="primary" onClick={() => onClick_ac()}>
+                  AC
                 </Button>
-                <Button className="button-style" type="primary" onClick={() => onClick('DEL')}>
-                  cos
+                <Button className="button-style" type="primary" onClick={() => onClick_de()}>
+                  DEL
                 </Button>
                 <Button className="button-style" type="primary" onClick={() => onClick('+')}>
-                  tan
+                  +
                 </Button>
                 <Button className="button-style" type="primary" onClick={() => onClick('-')}>
-                  ^
+                  -
                 </Button>
               </div>
             </Card>
@@ -80,16 +157,16 @@ const Home: React.FC = () => {
             {str}
             <Card hoverable variant="borderless" style={contentStyle}>
               <div className="button-top-grid">
-                <Button className="button-style" type="primary" onClick={() => onClick('AC')}>
+                <Button className="button-style" type="primary" onClick={() => onClick('sin')}>
                   sin
                 </Button>
-                <Button className="button-style" type="primary" onClick={() => onClick('DEL')}>
+                <Button className="button-style" type="primary" onClick={() => onClick('cos')}>
                   cos
                 </Button>
-                <Button className="button-style" type="primary" onClick={() => onClick('+')}>
+                <Button className="button-style" type="primary" onClick={() => onClick('tan')}>
                   tan
                 </Button>
-                <Button className="button-style" type="primary" onClick={() => onClick('-')}>
+                <Button className="button-style" type="primary" onClick={() => onClick('^')}>
                   ^
                 </Button>
               </div>
@@ -101,41 +178,101 @@ const Home: React.FC = () => {
           <Col span={18} style={{ height: '200px' }}>
             <div style={{ height: '13px' }}></div>
             <div className="button-grid">
-              <Button className="button-style" type="primary" onClick={() => onClick('9')}>
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('7')}
+              >
+                7
+              </Button>
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('8')}
+              >
+                8
+              </Button>
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('9')}
+              >
                 9
               </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('4')}>
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('4')}
+              >
                 4
               </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('1')}>
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('5')}
+              >
+                5
+              </Button>
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('6')}
+              >
+                6
+              </Button>
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('1')}
+              >
                 1
               </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('9')}>
-                9
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('2')}
+              >
+                2
               </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('4')}>
-                4
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('3')}
+              >
+                3
               </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('1')}>
-                1
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('pi')}
+              >
+                π
               </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('9')}>
-                9
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('0')}
+              >
+                0
               </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('4')}>
-                4
-              </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('1')}>
-                1
-              </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('9')}>
-                9
-              </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('4')}>
-                4
-              </Button>
-              <Button className="button-style" type="primary" onClick={() => onClick('1')}>
-                1
+              <Button
+                className="button-style"
+                type="primary"
+                style={{ color: 'black' }}
+                onClick={() => onClick('e')}
+              >
+                e
               </Button>
             </div>
           </Col>
@@ -143,6 +280,7 @@ const Home: React.FC = () => {
             {str}
             <Carousel
               arrows
+              dots={false}
               dotPosition="left"
               infinite={false}
               style={{ width: '140px', height: '450px' }}
@@ -150,17 +288,17 @@ const Home: React.FC = () => {
               <div>
                 <Card hoverable variant="borderless" style={c_contentStyle}>
                   <div className="button-left-grid">
-                    <Button className="button-style" type="primary" onClick={() => onClick('9')}>
-                      9
+                    <Button className="button-style" type="primary" onClick={() => onClick('*')}>
+                      ×
                     </Button>
-                    <Button className="button-style" type="primary" onClick={() => onClick('4')}>
-                      4
+                    <Button className="button-style" type="primary" onClick={() => onClick('/')}>
+                      ÷
                     </Button>
-                    <Button className="button-style" type="primary" onClick={() => onClick('1')}>
-                      1
+                    <Button className="button-style" type="primary" onClick={() => onClick('.')}>
+                      .
                     </Button>
-                    <Button className="button-style" type="primary" onClick={() => onClick('e')}>
-                      e
+                    <Button className="e-button-style" type="primary" onClick={() => evaluating()}>
+                      =
                     </Button>
                   </div>
                 </Card>
@@ -169,17 +307,21 @@ const Home: React.FC = () => {
               <div>
                 <Card hoverable variant="borderless" style={c_contentStyle}>
                   <div className="button-left-grid">
-                    <Button className="button-style" type="primary" onClick={() => onClick('9')}>
-                      9
+                    <Button className="button-style" type="primary" onClick={() => onClick('log')}>
+                      ln
                     </Button>
-                    <Button className="button-style" type="primary" onClick={() => onClick('4')}>
-                      4
+                    <Button
+                      className="button-style"
+                      type="primary"
+                      onClick={() => onClick('log10')}
+                    >
+                      lg
                     </Button>
-                    <Button className="button-style" type="primary" onClick={() => onClick('1')}>
-                      1
+                    <Button className="button-style" type="primary" onClick={() => onClick('(')}>
+                      (
                     </Button>
-                    <Button className="button-style" type="primary" onClick={() => onClick('e')}>
-                      e
+                    <Button className="button-style" type="primary" onClick={() => onClick(')')}>
+                      )
                     </Button>
                   </div>
                 </Card>

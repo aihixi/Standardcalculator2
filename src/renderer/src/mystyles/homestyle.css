@@ -6,7 +6,7 @@
 
 .content {
   flex: 1 1 auto; /* 占满剩余空间 */
-  overflow-y: auto; /* 超出滚动 */
+  overflow-y: hidden; /* 超出滚动 */
   padding: 20px; /* 内边距 */
 }
 
@@ -14,7 +14,10 @@
   flex: 0 0 auto; /* 固定高度 */
   font-size: 30px;
   color: #333;
-  padding: 20px;
+  font-weight: bold;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .button-style {
@@ -26,15 +29,26 @@
   border-radius: 20%;
 }
 
+.e-button-style {
+  background-color: #2D5789;
+  width: 100px;
+  height: 90px;
+  font-size: 50px;
+  color: white;
+  border-radius: 20%;
+}
+
 .card-style {
-  width: 480px;
+  width: 460px;
   height: 150px;
+  background-color: black;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 60px;
+  color: white;
+  text-align: right;
   margin: 0 auto;
-  /* position: absolute;
-  bottom: 65%;
-  left: 50%;
-  transform: translateX(-50%); */
-  word-break: break-all;
+  overflow: hidden;
+  border-radius: 30px;
 }
 
 .ant-carousel .slick-arrow {
