@@ -29,12 +29,10 @@ const Home: React.FC = () => {
 
   const [exprArr, setExprArr] = useState<string[]>([])
   const [showExpressions, setShowExpressions] = useState<string[]>([])
-  const [tempArr, setTempArr] = useState<string[]>([])
   const [result, setResult] = useState<string>('')
   const EPSILON = 1e-12 // 误差阈值
 
   const onClick = (num: string): void => {
-    setTempArr([]) // 清空临时数组
     setResult('') // 清空结果
     if (num === 'e' && exprArr[exprArr.length - 1] === 'log') {
       setShowExpressions((prev) => [...prev, num])
@@ -71,7 +69,6 @@ const Home: React.FC = () => {
     // TODO: 实现清空逻辑
     setShowExpressions([])
     setExprArr([])
-    setTempArr([])
     setResult('')
   }
 
@@ -99,7 +96,6 @@ const Home: React.FC = () => {
 
   const evaluating = (): number => {
     // TODO: 实现计算逻辑
-    setTempArr([...showExpressions])
     try {
       const rawResult = evaluate(exprArr.join(''))
       const numresult = sanitizeResult(rawResult)
