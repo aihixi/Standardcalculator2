@@ -8,6 +8,7 @@ body {
   background-color: #F7F7F7;
   background-size: cover;
   user-select: none;
+  border-radius: 16px;
 }
 
 code {

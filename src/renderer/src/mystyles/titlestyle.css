@@ -1,0 +1,27 @@
+#title-bar {
+  -webkit-app-region: drag;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  background: #151b27;
+  color: white;
+  font-size: 14px;
+  user-select: none;
+}
+
+#buttons {
+  display: flex;
+  gap: 10px;
+  -webkit-app-region: no-drag;
+}
+
+.button {
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
