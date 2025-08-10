@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: react-elct
+productName: StandardCalculator2
 directories:
   buildResources: build
 files:
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: react-elct
+  executableName: StandardCalculator2
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

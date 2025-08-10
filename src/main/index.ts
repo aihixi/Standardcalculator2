@@ -15,7 +15,7 @@ function createWindow(): void {
     resizable: false, // 不可调整大小
     hasShadow: true, // 窗口阴影
     autoHideMenuBar: true,
-    ...(process.platform === 'linux' ? { icon } : {}),
+    icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
