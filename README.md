@@ -8,7 +8,9 @@ An Electron application with React and TypeScript
 
 ## Screenshot
 <p align='center'>
-<img src='./build/.png' width="200" height="300"/>
+<img src='./build/1.png' width="200" height="330"/>
+
+<img src='./build/2.png' width="200" height="330"/>
 </p>
 
 ## Project Setup
