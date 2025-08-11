@@ -7,7 +7,7 @@ import TitleBar from './components/Mytitle'
 function App(): React.JSX.Element {
   return (
     <div>
-      <TitleBar />
+      {window.api && <TitleBar />}
       <RouterConfig />
     </div>
   )
