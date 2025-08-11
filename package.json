@@ -1,6 +1,6 @@
 {
   "name": "install-standardcalculator2",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "A Calculator",
   "main": "./out/main/index.js",
   "author": "asimod",
@@ -25,6 +25,7 @@
     "@electron-toolkit/utils": "^4.0.0",
     "antd": "^5.26.7",
     "mathjs": "^14.6.0",
+    "react-card-flip": "^1.2.3",
     "react-router-dom": "^7.8.0"
   },
   "devDependencies": {

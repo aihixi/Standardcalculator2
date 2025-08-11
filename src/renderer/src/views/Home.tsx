@@ -2,7 +2,8 @@
 import '../mystyles/homestyle.css'
 import React, { useState } from 'react'
 import { evaluate } from 'mathjs'
-import { Button, Card, Carousel, Row, Col } from 'antd'
+import ReactCardFlip from 'react-card-flip'
+import { Button, Card, Carousel, Row, Col, message } from 'antd'
 
 const Home: React.FC = () => {
   const contentStyle: React.CSSProperties = {
@@ -32,6 +33,36 @@ const Home: React.FC = () => {
   const [result, setResult] = useState<string>('')
   const EPSILON = 1e-12 // 误差阈值
 
+  const [messageApi, contextHolder] = message.useMessage()
+
+  const [flipped, setFlipped] = useState(false)
+
+  const [poem, setPoem] = useState('加载中...')
+  const [from, setFrom] = useState('')
+
+  const f_success = (e): void => {
+    e.stopPropagation()
+    const textToCopy = showExpressions.join('') || result
+    if (!textToCopy) {
+      return
+    }
+    navigator.clipboard.writeText(textToCopy)
+    messageApi.open({
+      type: 'success',
+      content: '复制成功'
+    })
+  }
+
+  const b_success = (e): void => {
+    e.stopPropagation()
+    const textToCopy = `${poem}\n${from}`
+    navigator.clipboard.writeText(textToCopy)
+    messageApi.open({
+      type: 'success',
+      content: '复制成功'
+    })
+  }
+
   const onClick = (num: string): void => {
     setResult('') // 清空结果
     if (num === 'e' && exprArr[exprArr.length - 1] === 'log') {
@@ -53,12 +84,10 @@ const Home: React.FC = () => {
       setShowExpressions((prev) => [...prev, '×'])
     } else if (num === '/') {
       setShowExpressions((prev) => [...prev, '÷'])
-    } else if (num === 'log10') {
-      setShowExpressions((prev) => [...prev, 'lg'])
-    } else if (num === 'log') {
-      setShowExpressions((prev) => [...prev, 'ln'])
-    } else if (num === 'atan') {
-      setShowExpressions((prev) => [...prev, 'tan⁻¹'])
+    } else if (num === 'log10(') {
+      setShowExpressions((prev) => [...prev, 'lg('])
+    } else if (num === 'log(') {
+      setShowExpressions((prev) => [...prev, 'ln('])
     } else {
       setShowExpressions((prev) => [...prev, num])
     }
@@ -107,19 +136,59 @@ const Home: React.FC = () => {
     } catch {
       setExprArr([])
       setShowExpressions([])
-      setResult('你认真的吗？')
+      setResult('错误')
       return NaN
     }
+  }
+
+  async function getPoem(): Promise<void> {
+    try {
+      const res = await fetch('https://v1.jinrishici.com/all.json')
+      const data = await res.json()
+      setPoem(data.content)
+      setFrom(`—— ${data.author}《${data.origin}》`)
+    } catch {
+      setPoem('加载失败，请稍后重试')
+      setFrom('')
+    }
+    console.log(poem)
   }
 
   return (
     <div className="page">
       <div className="page-header">
         <div style={{ height: '20px' }} />
-        <Card hoverable variant="borderless" className="card-style">
-          {showExpressions.join('')}
-          {result}
-        </Card>
+        {contextHolder}
+        <ReactCardFlip isFlipped={flipped} flipDirection="horizontal">
+          <Card
+            key={'front'}
+            hoverable
+            variant="borderless"
+            className="card-style"
+            onClick={() => {
+              setFlipped(true)
+              getPoem()
+            }}
+          >
+            <span onClick={f_success}>
+              {showExpressions.join('')}
+              {result}
+            </span>
+          </Card>
+          <Card
+            key={'back'}
+            hoverable
+            variant="borderless"
+            className="card-style"
+            style={{ fontSize: '25px' }}
+            onClick={() => setFlipped(false)}
+          >
+            <span onClick={b_success}>
+              <p style={{ textAlign: 'left', textIndent: '2em' }}>{poem}</p>
+              <p style={{ fontSize: '20px', fontStyle: 'italic' }}>{from}</p>
+            </span>
+          </Card>
+        </ReactCardFlip>
       </div>
       <div className="content">
         <Carousel
@@ -153,13 +222,13 @@ const Home: React.FC = () => {
             {str}
             <Card hoverable variant="borderless" style={contentStyle}>
               <div className="button-top-grid">
-                <Button className="button-style" type="primary" onClick={() => onClick('sin')}>
+                <Button className="button-style" type="primary" onClick={() => onClick('sin(')}>
                   sin
                 </Button>
-                <Button className="button-style" type="primary" onClick={() => onClick('cos')}>
+                <Button className="button-style" type="primary" onClick={() => onClick('cos(')}>
                   cos
                 </Button>
-                <Button className="button-style" type="primary" onClick={() => onClick('tan')}>
+                <Button className="button-style" type="primary" onClick={() => onClick('tan(')}>
                   tan
                 </Button>
                 <Button className="button-style" type="primary" onClick={() => onClick('^')}>
@@ -174,100 +243,40 @@ const Home: React.FC = () => {
           <Col span={18} style={{ height: '200px' }}>
             <div style={{ height: '13px' }}></div>
             <div className="button-grid">
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('7')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('7')}>
                 7
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('8')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('8')}>
                 8
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('9')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('9')}>
                 9
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('4')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('4')}>
                 4
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('5')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('5')}>
                 5
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('6')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('6')}>
                 6
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('1')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('1')}>
                 1
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('2')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('2')}>
                 2
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('3')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('3')}>
                 3
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('pi')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('pi')}>
                 π
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('0')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('0')}>
                 0
               </Button>
-              <Button
-                className="button-style"
-                type="primary"
-                style={{ color: 'black' }}
-                onClick={() => onClick('e')}
-              >
+              <Button className="l-button-style" type="primary" onClick={() => onClick('e')}>
                 e
               </Button>
             </div>
@@ -303,13 +312,13 @@ const Home: React.FC = () => {
               <div>
                 <Card hoverable variant="borderless" style={c_contentStyle}>
                   <div className="button-left-grid">
-                    <Button className="button-style" type="primary" onClick={() => onClick('log')}>
+                    <Button className="button-style" type="primary" onClick={() => onClick('log(')}>
                       ln
                     </Button>
                     <Button
                       className="button-style"
                       type="primary"
-                      onClick={() => onClick('log10')}
+                      onClick={() => onClick('log10(')}
                     >
                       lg
                     </Button>
