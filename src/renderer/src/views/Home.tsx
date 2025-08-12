@@ -3,6 +3,7 @@ import '../mystyles/homestyle.css'
 import React, { useState } from 'react'
 import { evaluate } from 'mathjs'
 import ReactCardFlip from 'react-card-flip'
+import { Mcard, Mbutton } from '../components/Menu'
 import { Button, Card, Carousel, Row, Col, message } from 'antd'
 
 const Home: React.FC = () => {
@@ -36,6 +37,7 @@ const Home: React.FC = () => {
   const [messageApi, contextHolder] = message.useMessage()
 
   const [flipped, setFlipped] = useState(false)
+  const [outflipped, setOutFlipped] = useState(false)
 
   const [poem, setPoem] = useState('加载中...')
   const [from, setFrom] = useState('')
@@ -158,36 +160,47 @@ const Home: React.FC = () => {
     <div className="page">
       <div className="page-header">
         <div style={{ height: '20px' }} />
+        <Mbutton outflipped={outflipped} setOutFlipped={setOutFlipped} />
         {contextHolder}
-        <ReactCardFlip isFlipped={flipped} flipDirection="horizontal">
-          <Card
-            key={'front'}
-            hoverable
-            variant="borderless"
-            className="card-style"
+        <ReactCardFlip isFlipped={outflipped} flipDirection="horizontal">
+          <ReactCardFlip key={'nomal'} isFlipped={flipped} flipDirection="horizontal">
+            <Card
+              key={'front'}
+              hoverable
+              variant="borderless"
+              className="card-style"
+              onClick={() => {
+                setFlipped(true)
+                getPoem()
+              }}
+            >
+              <span onClick={f_success}>
+                {showExpressions.join('')}
+                {result}
+              </span>
+            </Card>
+            <Card
+              key={'back'}
+              hoverable
+              variant="borderless"
+              className="card-style"
+              style={{ fontSize: '25px' }}
+              onClick={() => setFlipped(false)}
+            >
+              <span onClick={b_success}>
+                <p style={{ textAlign: 'left', textIndent: '2em' }}>{poem}</p>
+                <p style={{ fontSize: '20px', fontStyle: 'italic' }}>{from}</p>
+              </span>
+            </Card>
+          </ReactCardFlip>
+          <span
+            key={'menu'}
             onClick={() => {
-              setFlipped(true)
-              getPoem()
+              setOutFlipped(false)
             }}
           >
-            <span onClick={f_success}>
-              {showExpressions.join('')}
-              {result}
-            </span>
-          </Card>
-          <Card
-            key={'back'}
-            hoverable
-            variant="borderless"
-            className="card-style"
-            style={{ fontSize: '25px' }}
-            onClick={() => setFlipped(false)}
-          >
-            <span onClick={b_success}>
-              <p style={{ textAlign: 'left', textIndent: '2em' }}>{poem}</p>
-              <p style={{ fontSize: '20px', fontStyle: 'italic' }}>{from}</p>
-            </span>
-          </Card>
+            <Mcard />
+          </span>
         </ReactCardFlip>
       </div>
       <div className="content">

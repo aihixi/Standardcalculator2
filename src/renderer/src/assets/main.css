@@ -1,14 +1,8 @@
 @import './base.css';
 
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
   background-color: #F7F7F7;
-  background-size: cover;
-  user-select: none;
-  border-radius: 16px;
 }
 
 code {
