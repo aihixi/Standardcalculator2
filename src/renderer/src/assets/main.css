@@ -1,6 +1,7 @@
 @import './base.css';
 
 body {
+  height: 100vh;
   overflow: hidden;
   background-color: #F7F7F7;
 }

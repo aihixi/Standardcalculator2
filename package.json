@@ -1,6 +1,6 @@
 {
   "name": "install-standardcalculator2",
-  "version": "2.2.1",
+  "version": "2.3.1",
   "description": "A Calculator",
   "main": "./out/main/index.js",
   "author": "asimod",
@@ -24,7 +24,9 @@
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
     "antd": "^5.26.7",
+    "framer-motion": "^12.23.12",
     "mathjs": "^14.6.0",
+    "plotly.js-basic-dist": "^3.1.0",
     "react-card-flip": "^1.2.3",
     "react-router-dom": "^7.8.0"
   },

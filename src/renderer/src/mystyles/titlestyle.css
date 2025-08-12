@@ -1,6 +1,7 @@
 #title-bar {
   -webkit-app-region: drag;
   display: flex;
+  width: 550px;
   justify-content: space-between;
   align-items: center;
   padding: 6px 12px;
