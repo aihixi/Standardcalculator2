@@ -8,6 +8,7 @@
   flex: 1 1 auto; /* 占满剩余空间 */
   overflow-y: hidden; /* 超出滚动 */
   padding: 20px; /* 内边距 */
+  color: #000;
 }
 
 .page-header {
@@ -77,12 +78,15 @@
   background-color: transparent;
 }
 
-.button-top-grid {
+.draw-button-top-grid {
   display: grid;
   width: 400px;
   grid-template-columns: repeat(4, 1fr); /* 一行3列 */
   column-gap: 15px;
   justify-content: center;
+  margin: auto;
+  margin-top: 25px; 
+  margin-bottom: -10px;
   padding: 5px;
 }
 
@@ -116,10 +120,10 @@
   padding: 20px;
 }
 
-.plot-container {
+/* .plot-container {
   width: 100%;
   height: 90%;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 可选：添加阴影效果 */
-}
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+} */

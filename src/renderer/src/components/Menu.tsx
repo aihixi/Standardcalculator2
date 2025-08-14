@@ -6,7 +6,7 @@ import { Card, FloatButton } from 'antd'
 import { UnorderedListOutlined, CloseOutlined } from '@ant-design/icons'
 
 const gridStyle: React.CSSProperties = {
-  width: '25%',
+  width: '50%',
   textAlign: 'center',
   height: '100px'
 }
@@ -14,7 +14,15 @@ const gridStyle: React.CSSProperties = {
 const Mcard: React.FC = () => {
   const navigate = useNavigate()
   return (
-    <Card hoverable variant="borderless" className="mcard-style " title="menu">
+    <Card
+      style={{ backgroundColor: '#E8ECEF' }}
+      hoverable
+      variant="borderless"
+      className="mcard-style "
+      title={
+        <span style={{ textAlign: 'center', fontSize: '30px', fontWeight: 'bold' }}>MENU</span>
+      }
+    >
       <Card.Grid
         style={gridStyle}
         onClick={(e) => {
@@ -22,7 +30,7 @@ const Mcard: React.FC = () => {
           navigate('/')
         }}
       >
-        计算器
+        <span style={{ fontSize: '30px', fontWeight: 'bold', color: '#2D5789' }}>Calculator</span>
       </Card.Grid>
       <Card.Grid
         style={gridStyle}
@@ -31,9 +39,9 @@ const Mcard: React.FC = () => {
           navigate('/Drawing')
         }}
       >
-        绘图器
+        <span style={{ fontSize: '30px', fontWeight: 'bold', color: '#2D5789' }}>Drawer</span>
       </Card.Grid>
-      <Card.Grid
+      {/* <Card.Grid
         style={gridStyle}
         onClick={(e) => {
           e.stopPropagation()
@@ -48,7 +56,7 @@ const Mcard: React.FC = () => {
         }}
       >
         content
-      </Card.Grid>
+      </Card.Grid> */}
     </Card>
   )
 }
