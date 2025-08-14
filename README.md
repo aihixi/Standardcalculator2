@@ -19,7 +19,8 @@ An Electron application with React and TypeScript
 
 ## 第三方API和库
 - [一言·古诗词](https://github.com/xenv/gushici?tab=readme-ov-file)
--[functionPlot](https://github.com/mauriciopoppe/function-plot)
+
+- [functionPlot](https://github.com/mauriciopoppe/function-plot)
 
 ## Project Setup
 
