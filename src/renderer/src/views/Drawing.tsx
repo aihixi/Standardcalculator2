@@ -294,7 +294,7 @@ const Drawing: React.FC = () => {
         <Drawer
           title={exprArr.join('')}
           placement="bottom"
-          height={837}
+          height="95%"
           closable={{ 'aria-label': 'Close Button' }}
           onClose={onClose}
           open={open}
