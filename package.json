@@ -1,6 +1,6 @@
 {
   "name": "install-standardcalculator2",
-  "version": "2.3.1",
+  "version": "2.3.3",
   "description": "A Calculator",
   "main": "./out/main/index.js",
   "author": "asimod",
