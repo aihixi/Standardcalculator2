@@ -17,8 +17,9 @@ An Electron application with React and TypeScript
 <img src='./build/4.png' width="200" height="330"/>
 </p>
 
-## API
+## 第三方API和库
 - [一言·古诗词](https://github.com/xenv/gushici?tab=readme-ov-file)
+
 - [functionPlot](https://github.com/mauriciopoppe/function-plot)
 
 ## Project Setup
