@@ -6,7 +6,7 @@ import TitleBar from './components/Mytitle'
 
 function App(): React.JSX.Element {
   return (
-    <div>
+    <div className="no-select">
       {window.api && <TitleBar />}
       <RouterConfig />
     </div>

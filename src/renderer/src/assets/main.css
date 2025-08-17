@@ -1,5 +1,13 @@
 @import './base.css';
 
+.no-select {
+  user-select: none;
+  -webkit-user-select: none; /* Safari/iOS */
+  -ms-user-select: none;     /* 旧版Edge */
+  -moz-user-select: none;    /* Firefox */
+  -webkit-touch-callout: none; /* iOS 长按气泡菜单 */
+}
+
 body {
   height: 100vh;
   overflow: hidden;

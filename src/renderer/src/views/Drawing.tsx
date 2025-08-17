@@ -285,7 +285,7 @@ const Drawing: React.FC = () => {
                 .
               </Button>
               <Button className="e-button-style" type="primary" onClick={showDrawer}>
-                =
+                √
               </Button>
             </div>
           </Col>
